@@ -1,8 +1,8 @@
 class LdcWeka < Formula
   desc "Portable D programming language compiler - fork for Weka.IO"
   homepage "https://wiki.dlang.org/LDC"
-  url "https://github.com/weka-io/ldc.git", :revision => "a9d5e7c3c48f0a4ef7b6092f958988afc262f467"
-  version "2.070-weka"
+  url "https://github.com/weka-io/ldc.git", :revision => "e6a3448cf81cd0cab76c178eeabfb01befa00c30"
+  version "2.070-weka_e6a3448"
 
   head do
     url "https://github.com/weka-io/ldc.git", :shallow => false, :branch => "weka-2.071"
