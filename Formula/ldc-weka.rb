@@ -1,13 +1,9 @@
 class LdcWeka < Formula
   desc "Portable D programming language compiler - fork for Weka.IO"
   homepage "https://wiki.dlang.org/LDC"
-  url "https://github.com/weka-io/ldc.git", :revision => "e6a3448cf81cd0cab76c178eeabfb01befa00c30"
-  version "2.070-weka_e6a3448"
-
-  head do
-    url "https://github.com/weka-io/ldc.git", :shallow => false, :branch => "weka-2.071"
-    version "2.071-weka"
-  end
+  url "https://github.com/weka-io/ldc.git", :revision => "3139c87c6fad7c107000344995b9b3d105dbc2b6"
+  version "1.1.0-weka"
+  version_scheme 1 # we moved to LDC versions instead of DMD versions
 
   resource "ldc-lts" do
     url "https://github.com/ldc-developers/ldc.git", :shallow => false, :branch => "ltsmaster"
