@@ -5,11 +5,11 @@ class LdcWeka < Formula
 
   stable do
     url "https://github.com/weka-io/ldc.git", :shallow => false, :revision => "2d8c2b045d3e5ef69de0e240f973b30da263e48d"
-    version "1.1.0-mac"
+    version "1.1.0-mac2"
 
     resource "ldc-lts" do
-      url "https://github.com/ldc-developers/ldc/releases/download/v0.17.2/ldc-0.17.2-src.tar.gz"
-      sha256 "8498f0de1376d7830f3cf96472b874609363a00d6098d588aac5f6eae6365758"
+      url "https://github.com/ldc-developers/ldc/releases/download/v0.17.3/ldc-0.17.3-src.tar.gz"
+      sha256 "325bd540f7eb71c309fa0ee9ef6d196a75ee2c3ccf323076053e6b7b295c2dad"
     end
   end
 
