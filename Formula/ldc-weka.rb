@@ -4,20 +4,21 @@ class LdcWeka < Formula
   version_scheme 1
 
   stable do
-    url "https://github.com/weka-io/ldc.git", :shallow => false, :revision => "2d8c2b045d3e5ef69de0e240f973b30da263e48d"
-    version "1.1.0-mac2"
+    url "https://github.com/weka-io/ldc.git", :shallow => false, :revision => "0758a1b53d39dbba8bb4c64870a6f73b1d0bf4fe"
+    version "1.1.0-mac3"
 
     resource "ldc-lts" do
-      url "https://github.com/ldc-developers/ldc/releases/download/v0.17.3/ldc-0.17.3-src.tar.gz"
-      sha256 "325bd540f7eb71c309fa0ee9ef6d196a75ee2c3ccf323076053e6b7b295c2dad"
+      url "https://github.com/ldc-developers/ldc/releases/download/v0.17.4/ldc-0.17.4-src.tar.gz"
+      sha256 "48428afde380415640f3db4e38529345f3c8485b1913717995547f907534c1c3"
     end
+
+    depends_on "libconfig"
   end
 
   needs :cxx11
 
   depends_on "cmake" => :build
   depends_on "llvm"
-  depends_on "libconfig"
 
   conflicts_with "ldc", :because => "this is a patched ldc"
 
