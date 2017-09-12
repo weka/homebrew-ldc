@@ -4,8 +4,8 @@ class LdcWeka < Formula
   version_scheme 1
 
   stable do
-    url "https://github.com/weka-io/ldc.git", :shallow => false, :revision => "18f023e19b7840f429402ea06fe60b0c91452584"
-    version "1.1.0-mac5"
+    url "https://github.com/weka-io/ldc.git", :shallow => false, :revision => "d1d424f5452ecd28ac5edcb0c2079bc8f56d652c"
+    version "1.1.0-mac6"
 
     resource "ldc-lts" do
       url "https://github.com/ldc-developers/ldc/releases/download/v0.17.4/ldc-0.17.4-src.tar.gz"
