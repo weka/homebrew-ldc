@@ -8,8 +8,8 @@ class LdcWeka < Formula
     version "1.1.0-mac6"
 
     resource "ldc-lts" do
-      url "https://github.com/ldc-developers/ldc/releases/download/v0.17.4/ldc-0.17.4-src.tar.gz"
-      sha256 "48428afde380415640f3db4e38529345f3c8485b1913717995547f907534c1c3"
+      url "https://github.com/ldc-developers/ldc/releases/download/v0.17.5/ldc-0.17.5-src.tar.gz"
+      sha256 "7aa540a135f9fa1ee9722cad73100a8f3600a07f9a11d199d8be68887cc90008"
     end
 
     depends_on "libconfig"
