@@ -27,7 +27,7 @@ class LdcWeka < Formula
 
   depends_on "cmake" => :build
   depends_on "libconfig" => :build
-  depends_on "llvm"
+  depends_on "llvm@5"
 
   conflicts_with "ldc", :because => "this is a patched ldc"
 
@@ -38,7 +38,7 @@ class LdcWeka < Formula
     cd "ldc-lts" do
       mkdir "build" do
         args = std_cmake_args + %W[
-          -DLLVM_ROOT_DIR=#{Formula["llvm"].opt_prefix}
+          -DLLVM_ROOT_DIR=#{Formula["llvm@5"].opt_prefix}
         ]
         system "cmake", "..", *args
         system "make"
@@ -46,7 +46,7 @@ class LdcWeka < Formula
     end
     mkdir "build" do
       args = std_cmake_args + %W[
-        -DLLVM_ROOT_DIR=#{Formula["llvm"].opt_prefix}
+        -DLLVM_ROOT_DIR=#{Formula["llvm@5"].opt_prefix}
         -DINCLUDE_INSTALL_DIR=#{include}/dlang/ldc
         -DD_COMPILER=#{buildpath}/ldc-lts/build/bin/ldmd2
         -DLDC_WITH_LLD=OFF
@@ -62,7 +62,7 @@ class LdcWeka < Formula
   end
 
   test do
-    (testpath/"test.d").write <<-EOS.undent
+    (testpath/"test.d").write <<~EOS
       import std.stdio;
       void main() {
         writeln("Hello, world!");
