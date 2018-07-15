@@ -1,54 +1,40 @@
 class LdcWeka < Formula
   desc "Portable D programming language compiler - fork for Weka.IO"
   homepage "https://wiki.dlang.org/LDC"
-  version_scheme 1
+  version_scheme 2
 
   stable do
-    url "https://github.com/weka-io/ldc.git", :shallow => false, :revision => "6c1a0c115947a5ad2e4a350e652f13d2fd79c66a"
-    version "1.6.0-mac7"
-
-    resource "ldc-lts" do
-      url "https://github.com/ldc-developers/ldc/releases/download/v0.17.5/ldc-0.17.5-src.tar.gz"
-      sha256 "7aa540a135f9fa1ee9722cad73100a8f3600a07f9a11d199d8be68887cc90008"
-    end
-
+    url "https://github.com/weka-io/ldc/releases/download/weka-v1.8.0/ldc-weka-1.8.0-src.tar.xz"
+    sha256 "cf8d3dbbb976eb04224157397b2baef0c152a7e754330902af224b159d119ab6"
   end
 
   head do
     url "https://github.com/weka-io/ldc.git", :shallow => false, :branch => "weka-master"
+  end
 
-    resource "ldc-lts" do
-      url "https://github.com/ldc-developers/ldc/releases/download/v0.17.5/ldc-0.17.5-src.tar.gz"
-      sha256 "7aa540a135f9fa1ee9722cad73100a8f3600a07f9a11d199d8be68887cc90008"
-    end
+  resource "ldc-bootstrap" do
+    url "https://github.com/ldc-developers/ldc/releases/download/v1.10.0/ldc2-1.10.0-osx-x86_64.tar.xz"
+    version "1.10.0"
+    sha256 "79df77cd4c03560c4a8d32030a5fdad6eac14bbb4e3710e6872e27dce1915403"
   end
 
   needs :cxx11
 
   depends_on "cmake" => :build
   depends_on "libconfig" => :build
-  depends_on "llvm@5"
+  depends_on "llvm"
 
   conflicts_with "ldc", :because => "this is a patched ldc"
 
   def install
     ENV.cxx11
-    (buildpath/"ldc-lts").install resource("ldc-lts")
+    (buildpath/"ldc-bootstrap").install resource("ldc-bootstrap")
 
-    cd "ldc-lts" do
-      mkdir "build" do
-        args = std_cmake_args + %W[
-          -DLLVM_ROOT_DIR=#{Formula["llvm@5"].opt_prefix}
-        ]
-        system "cmake", "..", *args
-        system "make"
-      end
-    end
     mkdir "build" do
       args = std_cmake_args + %W[
-        -DLLVM_ROOT_DIR=#{Formula["llvm@5"].opt_prefix}
+        -DLLVM_ROOT_DIR=#{Formula["llvm"].opt_prefix}
         -DINCLUDE_INSTALL_DIR=#{include}/dlang/ldc
-        -DD_COMPILER=#{buildpath}/ldc-lts/build/bin/ldmd2
+        -DD_COMPILER=#{buildpath}/ldc-bootstrap/bin/ldmd2
         -DLDC_WITH_LLD=OFF
         -DRT_ARCHIVE_WITH_LDC=OFF
       ]
