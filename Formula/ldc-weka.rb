@@ -8,6 +8,11 @@ class LdcWeka < Formula
     sha256 "cf8d3dbbb976eb04224157397b2baef0c152a7e754330902af224b159d119ab6"
   end
 
+  bottle do
+    root_url "https://s3.amazonaws.com/wekaio-public/brew-bottles"
+    sha256 "361ee8013a3ed5d7062d115a7b977ba37c47c741f970710aff27beb8f19f61ec" => :high_sierra
+  end
+
   head do
     url "https://github.com/weka-io/ldc.git", :shallow => false, :branch => "weka-master"
   end
