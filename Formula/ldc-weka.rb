@@ -12,12 +12,6 @@ class LdcWeka < Formula
     url "https://github.com/weka-io/ldc.git", :shallow => false, :branch => "weka-master"
   end
 
-  resource "ldc-bootstrap" do
-    url "https://github.com/ldc-developers/ldc/releases/download/v1.10.0/ldc2-1.10.0-osx-x86_64.tar.xz"
-    version "1.10.0"
-    sha256 "79df77cd4c03560c4a8d32030a5fdad6eac14bbb4e3710e6872e27dce1915403"
-  end
-
   needs :cxx11
 
   depends_on "cmake" => :build
@@ -25,6 +19,12 @@ class LdcWeka < Formula
   depends_on "llvm"
 
   conflicts_with "ldc", :because => "this is a patched ldc"
+
+  resource "ldc-bootstrap" do
+    url "https://github.com/ldc-developers/ldc/releases/download/v1.10.0/ldc2-1.10.0-osx-x86_64.tar.xz"
+    version "1.10.0"
+    sha256 "79df77cd4c03560c4a8d32030a5fdad6eac14bbb4e3710e6872e27dce1915403"
+  end
 
   def install
     ENV.cxx11
