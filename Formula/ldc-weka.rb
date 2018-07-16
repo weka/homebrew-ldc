@@ -8,14 +8,13 @@ class LdcWeka < Formula
     sha256 "cf8d3dbbb976eb04224157397b2baef0c152a7e754330902af224b159d119ab6"
   end
 
-  head do
-    url "https://github.com/weka-io/ldc.git", :shallow => false, :branch => "weka-master"
+  bottle do
+    root_url "https://s3.amazonaws.com/wekaio-public/brew-bottles"
+    sha256 "361ee8013a3ed5d7062d115a7b977ba37c47c741f970710aff27beb8f19f61ec" => :high_sierra
   end
 
-  resource "ldc-bootstrap" do
-    url "https://github.com/ldc-developers/ldc/releases/download/v1.10.0/ldc2-1.10.0-osx-x86_64.tar.xz"
-    version "1.10.0"
-    sha256 "79df77cd4c03560c4a8d32030a5fdad6eac14bbb4e3710e6872e27dce1915403"
+  head do
+    url "https://github.com/weka-io/ldc.git", :shallow => false, :branch => "weka-master"
   end
 
   needs :cxx11
@@ -25,6 +24,12 @@ class LdcWeka < Formula
   depends_on "llvm"
 
   conflicts_with "ldc", :because => "this is a patched ldc"
+
+  resource "ldc-bootstrap" do
+    url "https://github.com/ldc-developers/ldc/releases/download/v1.10.0/ldc2-1.10.0-osx-x86_64.tar.xz"
+    version "1.10.0"
+    sha256 "79df77cd4c03560c4a8d32030a5fdad6eac14bbb4e3710e6872e27dce1915403"
+  end
 
   def install
     ENV.cxx11
