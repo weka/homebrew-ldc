@@ -11,6 +11,7 @@ class LdcWeka < Formula
   bottle do
     root_url "https://s3.amazonaws.com/wekaio-public/brew-bottles"
     sha256 "361ee8013a3ed5d7062d115a7b977ba37c47c741f970710aff27beb8f19f61ec" => :high_sierra
+    sha256 "a749c7a4263737a694cc0cf672dc85dd86023853014e1daf6c759f1f658a22e8" => :yosemite
   end
 
   head do
