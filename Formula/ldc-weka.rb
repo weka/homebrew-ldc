@@ -4,14 +4,13 @@ class LdcWeka < Formula
   version_scheme 2
 
   stable do
-    url "https://github.com/weka-io/ldc/releases/download/weka-v1.8.0/ldc-weka-1.8.0-src.tar.xz"
-    sha256 "cf8d3dbbb976eb04224157397b2baef0c152a7e754330902af224b159d119ab6"
+    url "https://github.com/weka-io/ldc/releases/download/v1.12.0-weka/ldc-weka-1.12.0-src.tar.xz"
+    sha256 "c23d7d5ac8ac7ce996ea133a04f07c16b739346f5cde90a0b6958f54aadcd1a8"
   end
 
   bottle do
     root_url "https://s3.amazonaws.com/wekaio-public/brew-bottles"
-    sha256 "361ee8013a3ed5d7062d115a7b977ba37c47c741f970710aff27beb8f19f61ec" => :high_sierra
-    sha256 "a749c7a4263737a694cc0cf672dc85dd86023853014e1daf6c759f1f658a22e8" => :yosemite
+    sha256 "9c04f7b38060596c95ac88f5b35763bbfad4164339977c1e02608291281b7287" => :mojave
   end
 
   head do
