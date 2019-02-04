@@ -17,8 +17,6 @@ class LdcWeka < Formula
     url "https://github.com/weka-io/ldc.git", :shallow => false, :branch => "weka-master"
   end
 
-  needs :cxx11
-
   depends_on "cmake" => :build
   depends_on "libconfig" => :build
   depends_on "llvm"
