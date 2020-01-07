@@ -4,13 +4,14 @@ class LdcWeka < Formula
   version_scheme 2
 
   stable do
-    url "https://github.com/weka-io/ldc/releases/download/v1.12.0-weka/ldc-weka-1.12.0-src.tar.xz"
-    sha256 "c23d7d5ac8ac7ce996ea133a04f07c16b739346f5cde90a0b6958f54aadcd1a8"
+    url "https://github.com/weka-io/ldc/releases/download/v1.13.0-weka_3/ldc-weka-1.13.0-weka_3-src.tar.xz"
+    version "1.13.0-weka_3"
+    sha256 "cd262496360009cf524182fa87ab75b7d0c954b80d613ca71f6d0fb291bca21f"
   end
 
   bottle do
     root_url "https://s3.amazonaws.com/wekaio-public/brew-bottles"
-    sha256 "9c04f7b38060596c95ac88f5b35763bbfad4164339977c1e02608291281b7287" => :mojave
+    sha256 "285ca4f2e8d28ea5d76131df931154ca93f6c083e1954ea217eb43ad9dbb04c3" => :mojave
   end
 
   head do
@@ -19,14 +20,16 @@ class LdcWeka < Formula
 
   depends_on "cmake" => :build
   depends_on "libconfig" => :build
-  depends_on "llvm"
+  # Pinning LLVM to 6.x - ldc2 v1.13.0 supports LLVM up to 7.0 (vs 9.0 which is the latest
+  # on homebrew), but fails with 7.1.0 for some reason
+  depends_on "llvm@6"
 
   conflicts_with "ldc", :because => "this is a patched ldc"
 
   resource "ldc-bootstrap" do
-    url "https://github.com/ldc-developers/ldc/releases/download/v1.10.0/ldc2-1.10.0-osx-x86_64.tar.xz"
-    version "1.10.0"
-    sha256 "79df77cd4c03560c4a8d32030a5fdad6eac14bbb4e3710e6872e27dce1915403"
+    url "https://github.com/ldc-developers/ldc/releases/download/v1.19.0/ldc2-1.19.0-osx-x86_64.tar.xz"
+    version "1.19.0"
+    sha256 "c7bf6facfa61f2e771091b834397b36331f5c28a56e988f06fc4dc9fe0ece3ae"
   end
 
   def install
@@ -35,14 +38,10 @@ class LdcWeka < Formula
 
     mkdir "build" do
       args = std_cmake_args + %W[
-        -DLLVM_ROOT_DIR=#{Formula["llvm"].opt_prefix}
+        -DLLVM_ROOT_DIR=#{Formula["llvm@6"].opt_prefix}
         -DINCLUDE_INSTALL_DIR=#{include}/dlang/ldc
         -DD_COMPILER=#{buildpath}/ldc-bootstrap/bin/ldmd2
-        -DLDC_WITH_LLD=OFF
-        -DRT_ARCHIVE_WITH_LDC=OFF
       ]
-      # LDC_WITH_LLD see https://github.com/ldc-developers/ldc/releases/tag/v1.4.0 Known issues
-      # RT_ARCHIVE_WITH_LDC see https://github.com/ldc-developers/ldc/issues/2350
 
       system "cmake", "..", *args
       system "make"
