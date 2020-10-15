@@ -1,35 +1,34 @@
 class LdcWeka < Formula
   desc "Portable D programming language compiler - fork for Weka.IO"
   homepage "https://wiki.dlang.org/LDC"
+  url "https://github.com/weka-io/ldc/releases/download/v1.21.0-weka/ldc-weka-1.21.0-weka.tar.xz"
+  version "1.21.0-weka"
+  sha256 "d86859dc04fddb6b9917338b1fcdb8bbc7258249dcab02691f2fa5401cbd0392"
+  license "BSD-3-Clause"
+  head "https://github.com/weka-io/ldc.git", :shallow => false, :branch => "weka-master"
+
+  conflicts_with "ldc", :because => "this is a patched ldc"
   version_scheme 2
 
-  stable do
-    url "https://github.com/weka-io/ldc/releases/download/v1.13.0-weka_3/ldc-weka-1.13.0-weka_3-src.tar.xz"
-    version "1.13.0-weka_3"
-    sha256 "cd262496360009cf524182fa87ab75b7d0c954b80d613ca71f6d0fb291bca21f"
-  end
-
   bottle do
-    root_url "https://s3.amazonaws.com/wekaio-public/brew-bottles"
-    sha256 "285ca4f2e8d28ea5d76131df931154ca93f6c083e1954ea217eb43ad9dbb04c3" => :mojave
-  end
-
-  head do
-    url "https://github.com/weka-io/ldc.git", :shallow => false, :branch => "weka-master"
+    root_url "https://github.com/weka-io/ldc/releases/download/v1.21.0-weka"
+    sha256 "d4b9d31de8adb52ee1e7d6a5296ce8ff223b8c45fc9c74636b0adba44bc67dd1" => :catalina
   end
 
   depends_on "cmake" => :build
   depends_on "libconfig" => :build
-  # Pinning LLVM to 6.x - ldc2 v1.13.0 supports LLVM up to 7.0 (vs 9.0 which is the latest
-  # on homebrew), but fails with 7.1.0 for some reason
-  depends_on "llvm@6"
+  depends_on "llvm@9" # due to a bug in llvm 10 https://bugs.llvm.org/show_bug.cgi?id=47226
 
-  conflicts_with "ldc", :because => "this is a patched ldc"
+  uses_from_macos "libxml2" => :build
+
+  on_linux do
+    depends_on "pkg-config" => :build
+  end
 
   resource "ldc-bootstrap" do
-    url "https://github.com/ldc-developers/ldc/releases/download/v1.19.0/ldc2-1.19.0-osx-x86_64.tar.xz"
-    version "1.19.0"
-    sha256 "c7bf6facfa61f2e771091b834397b36331f5c28a56e988f06fc4dc9fe0ece3ae"
+    url "https://github.com/ldc-developers/ldc/releases/download/v1.23.0/ldc2-1.23.0-osx-x86_64.tar.xz"
+    version "1.23.0"
+    sha256 "b3a6ec50f83063a66d5d538c635b1d1efc454bd8f2f8d74adaa93c36e1566dab"
   end
 
   def install
@@ -38,7 +37,7 @@ class LdcWeka < Formula
 
     mkdir "build" do
       args = std_cmake_args + %W[
-        -DLLVM_ROOT_DIR=#{Formula["llvm@6"].opt_prefix}
+        -DLLVM_ROOT_DIR=#{Formula["llvm@9"].opt_prefix}
         -DINCLUDE_INSTALL_DIR=#{include}/dlang/ldc
         -DD_COMPILER=#{buildpath}/ldc-bootstrap/bin/ldmd2
       ]
