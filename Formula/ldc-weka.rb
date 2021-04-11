@@ -13,6 +13,7 @@ class LdcWeka < Formula
   bottle do
     root_url "https://github.com/weka-io/ldc/releases/download/v1.21.0-weka"
     sha256 catalina: "d4b9d31de8adb52ee1e7d6a5296ce8ff223b8c45fc9c74636b0adba44bc67dd1"
+    sha256 big_sur: "6a16a2014117fb1b6ba144e5c1031540fe114afbe8128b8f49fbe03fda56455d"
   end
 
   depends_on "cmake" => :build
