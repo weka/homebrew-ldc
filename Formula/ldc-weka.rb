@@ -18,22 +18,33 @@ class LdcWeka < Formula
   bottle do
     root_url "https://github.com/weka/ldc/releases/download/v1.24.0-weka3"
     sha256 big_sur: "ee7a4072a97f693a3a6f0cafc42463e5b2528ef725d20f31102e4cf3f1ebd68a"
+    sha256 arm64_big_sur: "0bc708a617da533646c055d3439752c06ff7762123d04fc71635fd7ed6540a48"
   end
 
   depends_on "cmake" => :build
   depends_on "libconfig" => :build
+  depends_on "pkg-config" => :build
   depends_on "llvm@11"
 
   uses_from_macos "libxml2" => :build
 
-  on_linux do
-    depends_on "pkg-config" => :build
+  resource "ldc-bootstrap" do
+    on_macos do
+      if Hardware::CPU.intel?
+        url "https://github.com/ldc-developers/ldc/releases/download/v1.26.0/ldc2-1.26.0-osx-x86_64.tar.xz"
+        sha256 "b5af4e96b70b094711659b27a93406572cbd4ecf7003c1c84445c55c739c06a1"
+      else
+        url "https://github.com/ldc-developers/ldc/releases/download/v1.26.0/ldc2-1.26.0-osx-arm64.tar.xz"
+        sha256 "303930754c819d0f88434813a82122196bf3fe76ea5bd1b0f16d100b540100e6"
+      end
+    end
+
+    on_linux do
+      url "https://github.com/ldc-developers/ldc/releases/download/v1.26.0/ldc2-1.26.0-linux-x86_64.tar.xz"
+      sha256 "06063a92ab2d6c6eebc10a4a9ed4bef3d0214abc9e314e0cd0546ee0b71b341e"
+    end
   end
 
-  resource "ldc-bootstrap" do
-    url "https://github.com/ldc-developers/ldc/releases/download/v1.24.0/ldc2-1.24.0-osx-x86_64.tar.xz"
-    sha256 "91b74856982d4d5ede6e026f24e33887d931db11b286630554fc2ad0438cda44"
-  end
 
   # Add support for building against LLVM 11.1
   # This is already merged upstream via https://github.com/ldc-developers/druntime/pull/195
@@ -55,8 +66,10 @@ class LdcWeka < Formula
       system "make"
       system "make", "install"
 
-      # Workaround for https://github.com/ldc-developers/ldc/issues/3670
-      cp Formula["llvm@11"].opt_lib/"libLLVM.dylib", lib/"libLLVM.dylib"
+      on_macos do
+        # Workaround for https://github.com/ldc-developers/ldc/issues/3670
+        cp Formula["llvm"].opt_lib/"libLLVM.dylib", lib/"libLLVM.dylib"
+      end
     end
   end
 
@@ -89,3 +102,14 @@ __END__
  else static assert(false, "LDC LLVM version not supported");
  
  enum LLVM_atleast(int major) = (LLVM_version >= major * 100);
+--- a/driver/timetrace.d
++++ b/driver/timetrace.d
+@@ -136,7 +136,7 @@ struct TimeTraceProfiler
+     // timeBegin / time_scale = time in microseconds
+     static if (is(typeof(&QueryPerformanceFrequency)))
+     {
+-        uint time_scale = 1_000;
++        timer_t time_scale = 1_000;
+     } else {
+         enum time_scale = 1_000;
+     }
