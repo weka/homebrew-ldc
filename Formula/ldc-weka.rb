@@ -1,9 +1,8 @@
 class LdcWeka < Formula
   desc "Portable D programming language compiler - fork for Weka.IO"
   homepage "https://wiki.dlang.org/LDC"
-  url "https://github.com/weka/ldc/releases/download/v1.24.0-weka3/ldc-weka-1.24.0-weka3.tar.xz"
-  version "1.24.0-weka3"
-  sha256 "ad610241f71ac1d7782eaabeff652c9f0d92e35c11301db026e6dda9b175ce44"
+  url "https://github.com/weka/ldc.git", tag: "v1.24.0-weka3", revision: "53bad14845f2aab47a67908377c11ac5d93de72e"
+  version "1.24.0-weka3.1"
   license "BSD-3-Clause"
   head "https://github.com/weka-io/ldc.git", :shallow => false, :branch => "weka-master"
 
@@ -17,8 +16,6 @@ class LdcWeka < Formula
 
   bottle do
     root_url "https://github.com/weka/ldc/releases/download/v1.24.0-weka3"
-    sha256 big_sur: "ee7a4072a97f693a3a6f0cafc42463e5b2528ef725d20f31102e4cf3f1ebd68a"
-    sha256 arm64_big_sur: "0bc708a617da533646c055d3439752c06ff7762123d04fc71635fd7ed6540a48"
   end
 
   depends_on "cmake" => :build
@@ -55,11 +52,13 @@ class LdcWeka < Formula
     ENV.cxx11
     (buildpath/"ldc-bootstrap").install resource("ldc-bootstrap")
 
+    profdata_path = "#{buildpath}/instr_profiles/weka1.24-10nov2020.profdata"
+    dmd_with_pgo = "#{buildpath}/ldc-bootstrap/bin/ldmd2 -fprofile-instr-use=#{profdata_path}"
     mkdir "build" do
       args = std_cmake_args + %W[
         -DLLVM_ROOT_DIR=#{Formula["llvm@11"].opt_prefix}
         -DINCLUDE_INSTALL_DIR=#{include}/dlang/ldc
-        -DD_COMPILER=#{buildpath}/ldc-bootstrap/bin/ldmd2
+        -DD_COMPILER=#{dmd_with_pgo}
       ]
 
       system "cmake", "..", *args
